@@ -1,6 +1,7 @@
 package com.abhay.redditclone.service;
 
 import com.abhay.redditclone.dto.SubredditDto;
+import com.abhay.redditclone.exception.SpringRedditException;
 import com.abhay.redditclone.mapper.SubredditMapper;
 import com.abhay.redditclone.model.Subreddit;
 import com.abhay.redditclone.repository.SubredditRepository;
@@ -34,6 +35,12 @@ public class SubredditService {
                 .stream()
                 .map(subredditMapper::mapSubredditToDto)
                 .collect(Collectors.toList());
+    }
+
+    public SubredditDto getSubreddit(Long id) {
+        Subreddit subreddit = subredditRepository.findById(id)
+                .orElseThrow(() -> new SpringRedditException("No subreddit found with id:" + id));
+        return subredditMapper.mapSubredditToDto(subreddit);
     }
 
 }
